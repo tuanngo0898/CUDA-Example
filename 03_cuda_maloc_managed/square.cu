@@ -10,6 +10,7 @@ __global__ void square(int *d_out, int *d_in){
 int main(){
     const int ARRAY_SIZE = 1000;
     const int ARRAY_BYTES = ARRAY_SIZE * sizeof(int);
+    int id = cudaGetDevice(&id);
 
     int *in, *out;
 
@@ -22,9 +23,11 @@ int main(){
 
     int NUM_THREADS = 512;
     int NUM_BLOCKS  = ARRAY_SIZE / NUM_THREADS + 1;
+    cudaMemPrefetchAsync(in, ARRAY_BYTES, id);
     square<<<NUM_BLOCKS, NUM_THREADS>>>(out, in);
 
     cudaDeviceSynchronize();
+    cudaMemPrefetchAsync(out, ARRAY_BYTES, cudaCpuDeviceId);
 
     for(int i=0; i< ARRAY_SIZE; i++){
         cout << out[i];
