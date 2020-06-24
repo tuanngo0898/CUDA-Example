@@ -21,17 +21,17 @@ int main(){
         in[i] = i;
     }
 
-    int NUM_THREADS = 512;
-    int NUM_BLOCKS  = ARRAY_SIZE / NUM_THREADS + 1;
-    cudaMemPrefetchAsync(in, ARRAY_BYTES, id);
-    square<<<NUM_BLOCKS, NUM_THREADS>>>(out, in);
+    // int NUM_THREADS = 128;
+    // int NUM_BLOCKS  = ARRAY_SIZE / NUM_THREADS + 1;
+    // cudaMemPrefetchAsync(in, ARRAY_BYTES, id);
+    // square<<<NUM_BLOCKS, NUM_THREADS>>>(out, in);
 
-    cudaDeviceSynchronize();
-    cudaMemPrefetchAsync(out, ARRAY_BYTES, cudaCpuDeviceId);
+    // cudaDeviceSynchronize();
+    // cudaMemPrefetchAsync(out, ARRAY_BYTES, cudaCpuDeviceId);
 
-    for(int i=0; i< ARRAY_SIZE; i++){
-        cout << out[i];
-        if(i%10!=9) cout << "\t";
-        else cout << endl;
-    }
+    // for(int i=0; i< ARRAY_SIZE; i++){
+    //     cout << out[i];
+    //     if(i%10!=9) cout << "\t";
+    //     else cout << endl;
+    // }
 }
