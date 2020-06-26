@@ -4,7 +4,7 @@
 using namespace std::chrono; 
 using namespace std;
 
-#define n (1 << 10)
+#define n (1 << 2)
 
 __global__ void matrix_multiplication_kernel(int *d_a, int *d_b, int *d_c){
     int i = blockIdx.y * blockDim.y + threadIdx.y;
@@ -88,14 +88,16 @@ int main(){
 
     matrix_multiplication_kernel<<<grid,block>>>(d_a,d_b,d_d);
 
+    cudaDeviceSynchronize();
+
     cudaMemcpy(h_d, d_d, bytes, cudaMemcpyDeviceToHost);
     
-    // for(int i = 0; i < n; i++){
-    //     for(int j=0; j<n; j++){
-    //         cout << h_d[i*n + j] << "\t";
-    //     }
-    //     cout << endl;
-    // }
+    for(int i = 0; i < n; i++){
+        for(int j=0; j<n; j++){
+            cout << h_d[i*n + j] << "\t";
+        }
+        cout << endl;
+    }
 
     stop = high_resolution_clock::now(); 
     duration = duration_cast<microseconds>(stop - start);
